@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoute.js";
-import taskRoutes from "./routes/taskRoute.js";
+
 
 
 dotenv.config();
@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // JSON body parse
 app.use("/api/auth",authRoutes)
-app.use("/api/task",taskRoutes)
+
 
 
 app.get("/", (req, res) => {
