@@ -9,7 +9,7 @@ const router=express.Router();
 export const createBlog=async(req,res)=>{
     const {title,content,user}=req.body;
     try {
-        if(!title || !content || !user){
+        if(!title || !content ){
             return res.status(400).json({message:"All fields are required"});
         }
         if(!req.file){
@@ -22,7 +22,7 @@ export const createBlog=async(req,res)=>{
             title,
             image:result.secure_url,
             content,
-            user
+            user:req.user.id,
         });
         await newBlog.save();
         return res.status(201).json({message:"Blog created successfully"});
