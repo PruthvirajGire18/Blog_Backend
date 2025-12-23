@@ -17,7 +17,12 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true, // which user wrote the blog
-    }
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending"   // 👈 USER blog = pending
+    },
 }, { timestamps: true });
 
 export default mongoose.model("Blog", blogSchema);

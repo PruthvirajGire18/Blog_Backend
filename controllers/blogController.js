@@ -23,6 +23,7 @@ export const createBlog=async(req,res)=>{
             image:result.secure_url,
             content,
             user:req.user.id,
+            status:"pending"
         });
         await newBlog.save();
         return res.status(201).json({message:"Blog created successfully"});
@@ -33,11 +34,23 @@ export const createBlog=async(req,res)=>{
 }
 export const getAllBlogs=async(req,res)=>{
     try {
-        const blogs=await Blog.find().populate("user","name email").sort({createdAt:-1});
+        const blogs=await Blog.find({status:"approved"}).populate("user","name email").sort({createdAt:-1});
         return res.status(200).json({blogs});
 
     } catch (error) {
         console.error("Error fetching blogs:", error);
+        return res.status(500).json({message:"Internal server error"});
+    }
+}
+export const getBlogsByUser=async(req,res)=>{
+    try {
+        const blogs=await Blog.find({
+            user:req.user.id,
+            status:"approved"
+        }).populate("user","name email").sort({createdAt:-1});
+        return res.status(200).json({blogs});
+    } catch (error) {
+        console.error("Error fetching blogs by user:", error);
         return res.status(500).json({message:"Internal server error"});
     }
 }
@@ -96,7 +109,7 @@ export const deleteBlog=async(req,res)=>{
 }
 export const getAllBlogsOfAllUsers=async(req,res)=>{
     try {
-        const blogs=await Blog.find().populate("user","name email").sort({createdAt:-1});
+        const blogs=await Blog.find({status:"approved"}).populate("user","name email").sort({createdAt:-1});
         return res.status(200).json({blogs});
     } catch (error) {
         console.error("Error fetching blogs of all users:", error);

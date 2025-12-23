@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoute.js";
 import blogRoutes from "./routes/blogRoutes.js";
-
+import adminRoute from "./routes/adminRoute.js";
 
 
 dotenv.config();
@@ -15,6 +15,7 @@ app.use(cors());
 app.use(express.json()); // JSON body parse
 app.use("/api/auth",authRoutes)
 app.use("/api/blogs",blogRoutes)
+app.use("/api/admin",adminRoute)
 
 
 
