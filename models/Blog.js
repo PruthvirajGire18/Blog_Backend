@@ -21,7 +21,7 @@ const blogSchema = new mongoose.Schema({
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
-      default: "pending"   // 👈 USER blog = pending
+      default: "pending"   // USER blog = pending
     },
 }, { timestamps: true });
 

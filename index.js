@@ -11,11 +11,20 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "https://blogifyy1.netlify.app",
+  "http://localhost:5173",
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json()); // JSON body parse
-app.use("/api/auth",authRoutes)
-app.use("/api/blogs",blogRoutes)
-app.use("/api/admin",adminRoute)
+app.use("/api/auth", authRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/admin", adminRoute);
 
 
 
@@ -29,10 +38,14 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected Successfully 🚀");
-    app.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT}`)
-    );
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () =>
+        console.log(`Server running on http://localhost:${PORT}`)
+      );
+    }
   })
   .catch((err) => {
     console.log("DB Connection Failed ❌", err);
   });
+
+export default app;
